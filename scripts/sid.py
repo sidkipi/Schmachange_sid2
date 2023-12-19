@@ -27,8 +27,9 @@ for file_name in os.listdir("dbscripts"):
             version = match2.group(1)
 
             if any(existing_version <= version for existing_version in existing_versions):
-                print(f"File '{file_name}' has an equal or lower version.")
+                print(f"File '{file_name}' has an equal or lower version. Please enter a higher version.")
                 valid = False
+                continue
             else:
                 existing_versions.add(version)
 
@@ -37,7 +38,7 @@ for file_name in os.listdir("dbscripts"):
             matching_files.append(file_name)
 
 if not valid:
-    print("Validation failed. Exiting with an error.")
+    print("Validation failed.")
     print("Unmatched files:", unmatched_files)
     sys.exit(1)
 
