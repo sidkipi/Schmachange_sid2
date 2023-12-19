@@ -19,7 +19,11 @@ for file_name in os.listdir("dbscripts"):
         match2 = pattern2.match(file_name)
         match3 = pattern3.match(file_name)
 
-        if match2:
+        if not (match1 or match2 or match3):
+            print(f"File '{file_name}' does not match the pattern.")
+            unmatched_files.append(file_name)
+            valid = False
+        elif match2:
             version = match2.group(1)
 
             if version in existing_versions:
@@ -31,15 +35,11 @@ for file_name in os.listdir("dbscripts"):
         if match1 or match2 or match3:
             print(f"File '{file_name}' matches the pattern.")
             matching_files.append(file_name)
-        else:
-            print(f"File '{file_name}' does not match the pattern.")
-            unmatched_files.append(file_name)
-            valid = False
 
-if valid:
-    print("::set-output name=valid::true")
-    print("Matching files:", matching_files)
-else:
+if not valid:
     print("Validation failed. Exiting with an error.")
     print("Unmatched files:", unmatched_files)
     sys.exit(1)
+
+print("::set-output name=valid::true")
+print("Matching files:", matching_files)
