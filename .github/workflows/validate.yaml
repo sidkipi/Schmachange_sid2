@@ -1,0 +1,26 @@
+name: showcase_cicd_snowflake
+
+on:
+  push:
+    branches:
+      - feature
+    paths:
+      - 'dbscripts/**'
+
+jobs:
+  snowflake-cicd-showcase:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Use Python 3.8.x
+        uses: actions/setup-python@v2.2.1
+        with:
+          python-version: 3.8.x
+
+      - name: Validate file names
+        id: validate_files
+        run: |
+          python scripts/sid.py
