@@ -27,8 +27,8 @@ for file_name in os.listdir("dbscripts"):
             version = match2.group(1)
 
             if version in existing_versions:
-                print(f"File '{file_name}' has an equal or lower version. Exiting with an error.")
-                sys.exit(1)
+                print(f"File '{file_name}' has an equal or lower version.")
+                valid = False
             else:
                 existing_versions.add(version)
 
