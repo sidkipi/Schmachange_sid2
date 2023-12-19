@@ -13,6 +13,9 @@ unmatched_files = []
 # Keep track of the existing versions
 existing_versions = set()
 
+# Keep track of the current file causing the issue
+current_file_causing_issue = None
+
 for file_name in os.listdir("dbscripts"):
     if file_name.endswith(".sql"):
         match1 = pattern1.match(file_name)
@@ -29,7 +32,8 @@ for file_name in os.listdir("dbscripts"):
             if any(existing_version <= version for existing_version in existing_versions):
                 print(f"File '{file_name}' has an equal or lower version. Please enter a higher version.")
                 valid = False
-                continue
+                current_file_causing_issue = file_name  # Set the current file causing the issue
+                break  # Exit the loop, no need to process other files
             else:
                 existing_versions.add(version)
 
@@ -44,3 +48,8 @@ if not valid:
 
 print("::set-output name=valid::true")
 print("Matching files:", matching_files)
+
+# Prompt only for the current file causing the issue
+if current_file_causing_issue:
+    user_input = input(f"Please enter a higher version for '{current_file_causing_issue}': ")
+    # Process user input as needed
