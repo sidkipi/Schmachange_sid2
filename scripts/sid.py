@@ -26,7 +26,7 @@ for file_name in os.listdir("dbscripts"):
         elif match2:
             version = match2.group(1)
 
-            if version in existing_versions:
+            if any(existing_version <= version for existing_version in existing_versions):
                 print(f"File '{file_name}' has an equal or lower version.")
                 valid = False
             else:
